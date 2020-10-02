@@ -53,8 +53,8 @@ class WinPty implements Pty {
   @override
   void resize(int width, int height) {
     final size = win32.COORD.allocate();
-    size.X = 80;
-    size.Y = 25;
+    size.X = width;
+    size.Y = height;
     final hr = win32.ResizePseudoConsole(
         Pointer.fromAddress(_hPC.value), size.addressOf.cast<IntPtr>().value);
     print('ResizePseudoConsole $hr');
