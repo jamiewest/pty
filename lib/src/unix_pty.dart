@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ffi';
+import 'dart:io';
 
 import 'package:ffi/ffi.dart';
 import 'package:pty/src/pty.dart';
@@ -37,7 +38,9 @@ class UnixPty implements Pty {
     final sz = allocate<winsize>();
     sz.ref.ws_row = height;
     sz.ref.ws_col = width;
-    unistd.ioctl(_ptm, TIOCSWINSZ, sz.cast<Void>());
+
+    final request = Platform.isMacOS ? 2148037735 : TIOCSWINSZ;
+    unistd.ioctl(_ptm, request, sz.cast<Void>());
   }
 
   @override
